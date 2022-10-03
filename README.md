@@ -1,16 +1,19 @@
 ## NYC PVP IV Pokemon Map
 
 ### Instructions:
-1. Clone this repo
-2. Make sure <code>requests, geopy</code> are installed, run the following command if needed
+1. Clone this repo.
+
+2. Make sure <code>requests, geopy</code> are installed, run the following command if needed:
 ```commandline
 pip install -r requirements.txt
 ```
-3. Run the following command:
+
+3. Run the following command to find spawns:
 ```commandline
 python main.py <spawn_mon_id> <pvp_mon_id> {min_rank} {cp_cap}
 ```
-Default value for min_rank is 100, for cp_cap is 1500. 
+Default values: <code>min_rank=100, cp_cap=1500</code>
+
 4. Examples:
 ```commandline
 python main.py 747 748
