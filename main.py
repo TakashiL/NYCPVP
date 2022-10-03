@@ -140,6 +140,7 @@ if __name__ == '__main__':
                       'pvp_level': gs['level']/2 + 1,
                       'address': address,
                       'map': f"https://maps.google.com/maps?q={coords}"}
+        print()
         print(print_dict)
 
     if len(good_spawns) == 0:
