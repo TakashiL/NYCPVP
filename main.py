@@ -102,10 +102,21 @@ if __name__ == '__main__':
     now_epoch = datetime.datetime.now().strftime('%s')
     current_spawns = get_current_spawns(spawn_mon_id, 1, now_epoch)
 
-    # base example: {667: { "id": 667, "name": "Litleo", "at": 139, "df": 112, "st": 158}}
-    # spawn example: {'pokemon_id': 747, 'lat': 40.71228988, 'lng': -73.95641737, 'despawn': 1664773371, 'disguise': 0, 'attack': 11, 'defence': 6, 'stamina': 10, 'move1': 236, 'move2': 92, 'costume': -1, 'gender': 1, 'shiny': 0, 'form': -1, 'cp': 93, 'level': 4, 'weather': 0}
+    """
+    base example: {667: { "id": 667, "name": "Litleo", "at": 139, "df": 112, "st": 158}}
+    
+    spawn example: {
+    'pokemon_id': 747, 
+    'lat': 40.71228988, 'lng': -73.95641737, 
+    'despawn': 1664773371, 'disguise': 0, 
+    'attack': 11, 'defence': 6, 'stamina': 10, 
+    'move1': 236, 'move2': 92, 'costume': -1, 'gender': 1, 'shiny': 0, 'form': -1, 'cp': 93, 'level': 4, 'weather': 0
+    }
+    """
 
     print(f"Target rank: {target_rank} | CP Cap: {cp_cap}")
+    print(f"Pokemon id: {spawn_mon_id} | Pokemon Name: {pokemon_base_dict[spawn_mon_id]['name']} | "
+          f"PVP Pokemon Name: {pvp_mon['name']}")
 
     good_spawns = []
     for spawn in current_spawns:
@@ -122,15 +133,13 @@ if __name__ == '__main__':
         coords = f"{gs['lat']},{gs['lng']}"
         address = locator.reverse(coords).address
 
-        print_dict = {'pokemon_id': gs['pokemon_id'],
-                      'ranking': gs['rankings'],
+        print_dict = {'ranking': gs['rankings'],
                       'coords': coords,
                       'iv': f"{gs['attack']}/{gs['defence']}/{gs['stamina']}",
                       'until': f"{str(despawn_time)} ({round(left_time, 2)} minutes left)",
                       'pvp_level': gs['level']/2 + 1,
                       'address': address,
-                      'map': f"https://maps.google.com/maps?q={coords}",
-                      }
+                      'map': f"https://maps.google.com/maps?q={coords}"}
         print(print_dict)
 
     if len(good_spawns) == 0:
