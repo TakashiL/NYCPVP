@@ -3,6 +3,7 @@ import datetime
 import requests
 import json
 import math
+from geopy.geocoders import Nominatim
 
 cp_multiplier = [0.09399999678, 0.1351374321, 0.1663978696, 0.1926509132, 0.2157324702, 0.2365726514, 0.2557200491,
                  0.2735303721, 0.2902498841, 0.3060573814, 0.3210875988, 0.335445032, 0.3492126763, 0.3624577366,
@@ -92,6 +93,8 @@ if __name__ == '__main__':
     target_rank = int(args[2]) if len(args) > 2 else 100
     cp_cap = int(args[3]) if len(args) > 3 else 1500
 
+    locator = Nominatim(user_agent="NYCPVP")
+
     pokemon_base_dict = get_pokemon_base_dict()
     pvp_mon = pokemon_base_dict[pvp_mon_id]
     pvp_mon_rankings = get_pvp_iv_whole_rankings(cp_cap, pvp_mon, max_lvl=99)
@@ -101,6 +104,8 @@ if __name__ == '__main__':
 
     # base example: {667: { "id": 667, "name": "Litleo", "at": 139, "df": 112, "st": 158}}
     # spawn example: {'pokemon_id': 747, 'lat': 40.71228988, 'lng': -73.95641737, 'despawn': 1664773371, 'disguise': 0, 'attack': 11, 'defence': 6, 'stamina': 10, 'move1': 236, 'move2': 92, 'costume': -1, 'gender': 1, 'shiny': 0, 'form': -1, 'cp': 93, 'level': 4, 'weather': 0}
+
+    print(f"Target rank: {target_rank} | CP Cap: {cp_cap}")
 
     good_spawns = []
     for spawn in current_spawns:
@@ -114,12 +119,19 @@ if __name__ == '__main__':
     for gs in good_spawns:
         despawn_time = datetime.datetime.fromtimestamp(gs['despawn'])
         left_time = (despawn_time - datetime.datetime.now()).seconds / 60
+        coords = f"{gs['lat']},{gs['lng']}"
+        address = locator.reverse(coords).address
+
         print_dict = {'pokemon_id': gs['pokemon_id'],
                       'ranking': gs['rankings'],
-                      'coords': f"{gs['lat'], gs['lng']}",
+                      'coords': coords,
                       'iv': f"{gs['attack']}/{gs['defence']}/{gs['stamina']}",
-                      'despawn': str(despawn_time),
-                      'left_time': f"{round(left_time, 2)} minutes",
-                      'level': gs['level']/2 + 1
+                      'until': f"{str(despawn_time)} ({round(left_time, 2)} minutes left)",
+                      'pvp_level': gs['level']/2 + 1,
+                      'address': address,
+                      'map': f"https://maps.google.com/maps?q={coords}",
                       }
         print(print_dict)
+
+    if len(good_spawns) == 0:
+        print("No qualified spawn found, please try next time!")
