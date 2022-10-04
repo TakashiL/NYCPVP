@@ -121,9 +121,10 @@ if __name__ == '__main__':
     good_spawns = []
     for spawn in current_spawns:
         stats = pvp_mon_rankings[(spawn['attack'], spawn['defence'], spawn['stamina'])]
-        if stats[0] <= target_rank:
+        pvp_level = stats[2] / 2 + 1
+        if stats[0] <= target_rank and pvp_level >= spawn['level']:
             spawn['rankings'] = stats[0]
-            spawn['level'] = stats[2]
+            spawn['pvp_level'] = pvp_level
             good_spawns.append(spawn)
 
     good_spawns = sorted(good_spawns, key=lambda x: x['rankings'])
@@ -137,7 +138,8 @@ if __name__ == '__main__':
                       'coords': coords,
                       'iv': f"{gs['attack']}/{gs['defence']}/{gs['stamina']}",
                       'until': f"{str(despawn_time)} ({round(left_time, 2)} minutes left)",
-                      'pvp_level': gs['level']/2 + 1,
+                      'pvp_level': gs['pvp_level'],
+                      'spawn_level': gs['level'],
                       'address': address,
                       'map': f"https://maps.google.com/maps?q={coords}"}
         print()
