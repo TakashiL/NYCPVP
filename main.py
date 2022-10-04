@@ -41,7 +41,7 @@ def get_current_spawns(mon_id, min_iv, time, since=0):
     api = f"https://nycpokemap.com/query2.php?mons={mon_id}&minIV={min_iv}&time={time}&since={since}"
     response = requests.get(api, headers={"referer": "https://nycpokemap.com/"})
     if response.status_code == 200:
-        print("Successfully fetched the current spawn data")
+        print(f"Successfully fetched the current spawn data")
         return response.json()['pokemons']
     else:
         print(f"There's a {response.status_code} error with your request")
@@ -115,8 +115,8 @@ if __name__ == '__main__':
     """
 
     print(f"Target rank: {target_rank} | CP Cap: {cp_cap}")
-    print(f"Pokemon id: {spawn_mon_id} | Pokemon Name: {pokemon_base_dict[spawn_mon_id]['name']} | "
-          f"PVP Pokemon Name: {pvp_mon['name']}")
+    print(f"Pokemon id: {spawn_mon_id} | Pokemon: {pokemon_base_dict[spawn_mon_id]['name']} | "
+          f"PVP Pokemon: {pvp_mon['name']} | Total spawns: {len(current_spawns)}")
 
     good_spawns = []
     for spawn in current_spawns:
