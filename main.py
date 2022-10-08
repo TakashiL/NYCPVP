@@ -33,7 +33,7 @@ def get_pokemon_base_dict():
 
     pokemon_base_dict = {}
     for item in pokemon_base_data:
-        if 'Mega' in item['name']:
+        if '(Mega)' in item['name']:
             continue
         pokemon_base_dict[item["id"]] = item
     return pokemon_base_dict
