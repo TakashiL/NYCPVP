@@ -33,7 +33,9 @@ def get_pokemon_base_dict():
 
     pokemon_base_dict = {}
     for item in pokemon_base_data:
-        if '(Mega)' in item['name']:
+        if '(' in item['name']:
+            key = item['name'].replace(" ", "")
+            pokemon_base_dict[key] = item
             continue
         pokemon_base_dict[item["id"]] = item
     return pokemon_base_dict
@@ -91,7 +93,7 @@ if __name__ == '__main__':
         sys.exit("Please provide at least two args: spawn_mon_id and pvp_mon_id")
 
     spawn_mon_id = int(args[0])
-    pvp_mon_id = int(args[1])
+    pvp_mon_id = int(args[1]) if args[1].isdigit() else args[1]
     target_rank = int(args[2]) if len(args) > 2 else 100
     cp_cap = int(args[3]) if len(args) > 3 else 1500
 

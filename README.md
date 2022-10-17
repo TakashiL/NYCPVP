@@ -19,6 +19,7 @@ Default values: <code>min_rank=100, cp_cap=1500</code>
 python main.py 747 748
 python main.py 747 748 100
 python main.py 747 748 100 2500
+python main.py 37 Ninetales\(Alolan\) # for special pokemon use this
 ```
 
 ---
