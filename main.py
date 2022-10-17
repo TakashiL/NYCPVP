@@ -75,8 +75,9 @@ def get_pvp_iv_whole_rankings(cp_cap, poke, max_lvl):
         st = math.floor(poke['st'] + iv_combo['st'])
         level = get_level_cap(at, df, st, cp_cap, cp_multiplier_power_4, max_lvl)
         stat_product = cp_multiplier_power_2[level] * at * df * math.floor(cp_multiplier[level] * st)
-        products.append([stat_product, level, iv_combo['at'], iv_combo['df'], iv_combo['st']])
-    products = sorted(products, key=lambda x: -x[0])
+        iv_sum = iv_combo['at'] + iv_combo['df'] + iv_combo['st']
+        products.append([stat_product, level, iv_combo['at'], iv_combo['df'], iv_combo['st'], iv_sum])
+    products = sorted(products, key=lambda x: (-x[0], -x[-1]))
     ranking_dict = {}
     for i in range(len(products)):
         ranking = i+1
